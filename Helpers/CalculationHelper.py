@@ -15,7 +15,7 @@ class CalculationHelper:
     
         Returns:
             float: a point with x and y coordinates between [0, 1] inside of a circle with a given radius.
-        """
+    """
     def generatePointInCircle(self, circleRadius=0.5, centerX = 0.5, centerY=0.5):
         r = circleRadius * math.sqrt(random.random())
         theta = random.random() * 2 * math.pi

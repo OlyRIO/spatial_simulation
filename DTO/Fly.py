@@ -1,28 +1,26 @@
 import math
 from DTO.Point import *
+from DTO.Step import *
 
 class Fly:
     currentPosition = Point(0, 0)
-    orientation = 0
     targetPoint = Point(0, 0)
+    pointList = []
 
     def __init__(self, point):
-        self.x = point.x
-        self.y = point.y
+        self.currentPosition = point
+        self.pointList.append(point)
 
-    def setOrientation(self, orientation):
-        self.orientation = orientation
-
-    def setTargetPos(self, stepLength):
-        targetX = stepLength * math.cos(self.orientation)
-        targetY = stepLength * math.sin(self.orientation)
+    def setTargetPos(self, step):
+        targetX = step.distance * math.cos(step.direction)
+        targetY = step.distance * math.sin(step.direction)
         self.targetPoint = Point(targetX, targetY)
 
-    def move(self, frequency = 1/12):
-        deltaX = self.x - self.targetPoint.x
-        deltaY = self.y - self.targetPoint.y
-        self.currentPosition.x += self.targetPoint.x * frequency
-        self.currentPosition.y += self.targetPoint.y * frequency
+    def move(self):
+        if(self.currentPosition == self.targetPoint):
+            return
+        self.currentPosition = self.targetPoint
+        self.pointList.append(self.currentPosition)
         
 
     def printAll(self):
