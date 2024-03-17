@@ -18,9 +18,11 @@ class Fly:
         targetY = stepLength * math.sin(self.orientation)
         self.targetPoint = Point(targetX, targetY)
 
-    def move(self, frequency):
+    def move(self, frequency = 1/12):
         deltaX = self.x - self.targetPoint.x
         deltaY = self.y - self.targetPoint.y
+        self.currentPosition.x += self.targetPoint.x * frequency
+        self.currentPosition.y += self.targetPoint.y * frequency
         
 
     def printAll(self):

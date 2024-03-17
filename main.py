@@ -6,11 +6,9 @@ import random
 
 def main():
     calcHelper = CalculationHelper()
-    points = [calcHelper.generatePointInCircle() for y in range(10)]
+    points = [calcHelper.generatePointInCircle() for y in range(20)]
     xCoords = [point.x for point in points]
     yCoords = [point.y for point in points]
-    print(xCoords)
-    print("\n", yCoords)
     plotHelper = PlotHelper(xCoords, yCoords)
     plotHelper.plot()
 
