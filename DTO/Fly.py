@@ -1,27 +1,36 @@
 import math
 from DTO.Point import *
 from DTO.Step import *
+from Helpers.CalculationHelper import *
 
 class Fly:
-    currentPosition = Point(0, 0)
+    currentPoint = Point(0, 0)
     targetPoint = Point(0, 0)
     pointList = []
 
     def __init__(self, point):
-        self.currentPosition = point
+        self.currentPoint = point
         self.pointList.append(point)
 
-    def setTargetPos(self, step):
+
+    """
+    Moves the current point of the fly by the given step
+
+        Args:
+            step (step): Step containing the direction and orientation to move to the new point
+    
+        Returns:
+            point: new position of the fly
+    
+    """
+    def getTargetPoint(self, step):
         targetX = step.distance * math.cos(step.direction)
         targetY = step.distance * math.sin(step.direction)
-        self.targetPoint = Point(targetX, targetY)
+        return Point(targetX, targetY)
 
-    def move(self):
-        if(self.currentPosition == self.targetPoint):
+    def moveTo(self, targetPoint):
+        calcHelper = CalculationHelper()
+        if (targetPoint == self.currentPoint or not calcHelper.isPointInCircle(targetPoint)):
             return
-        self.currentPosition = self.targetPoint
-        self.pointList.append(self.currentPosition)
-        
-
-    def printAll(self):
-        print("Current fly coordinates are ({}, {})" .format(self.x, self.y))
+        self.currentPoint = targetPoint
+        self.pointList.append(self.currentPoint)

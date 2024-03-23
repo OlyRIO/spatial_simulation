@@ -23,4 +23,20 @@ class CalculationHelper:
         y = centerY + r * math.sin(theta)
 
         return Point(x, y)
+    
+    """
+    Checks if a point is inside of a circle
+    
+        Args:
+            point (point): Point to be checked
+            radius (float): Radius of the circle.
+            centerX (float): X coordinate of the center of the bounding circle.
+            centerY (float): Y coordinate of the center of the bounding circle.
+    
+        Returns:
+            bool: is point inside of the circle
+    """
+    def isPointInCircle(self, point, radius=0.5, centerX = 0.5, centerY=0.5):
+        checkCondition = math.pow(point.x - centerX, 2) + math.pow(point.y - centerY, 2) < radius * radius 
+        return checkCondition
 

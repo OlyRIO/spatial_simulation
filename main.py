@@ -1,15 +1,23 @@
 from DTO.Fly import *
 from Helpers.CalculationHelper import CalculationHelper
 from Helpers.PlotHelper import *
+from Helpers.DataGenerator import *
 import random
 
 
 def main():
     calcHelper = CalculationHelper()
-    points = [calcHelper.generatePointInCircle() for y in range(20)]
-    xCoords = [point.x for point in points]
-    yCoords = [point.y for point in points]
+    dataGenerator = DataGenerator(100)
+    fly = Fly(calcHelper.generatePointInCircle())
+
+    for step in dataGenerator.steps:
+        targetPt = fly.getTargetPoint(step)
+        fly.moveTo(targetPt)
+
+    xCoords = [point.x for point in fly.pointList]
+    yCoords = [point.y for point in fly.pointList]
     plotHelper = PlotHelper(xCoords, yCoords)
+
     plotHelper.plot()
 
 

@@ -1,5 +1,6 @@
 import random
 from DTO.Step import *
+from Helpers.CalculationHelper import *
 
 class DataGenerator:
     """
@@ -23,6 +24,8 @@ class DataGenerator:
         self.generateRndSteps(stepNumber)
         
     def generateRndSteps(self, stepNumber):
+        calcHelper = CalculationHelper()
+        
         for i in range(stepNumber):
             dir = random.random()
             dist = random.random()
