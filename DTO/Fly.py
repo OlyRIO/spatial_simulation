@@ -26,7 +26,7 @@ class Fly:
     def getTargetPoint(self, step):
         targetX = step.distance * math.cos(step.direction)
         targetY = step.distance * math.sin(step.direction)
-        return Point(targetX, targetY)
+        return Point(self.currentPoint.x + targetX, self.currentPoint.y + targetY)
 
     def moveTo(self, targetPoint):
         calcHelper = CalculationHelper()

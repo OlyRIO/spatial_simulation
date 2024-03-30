@@ -27,7 +27,19 @@ class DataGenerator:
         calcHelper = CalculationHelper()
         
         for i in range(stepNumber):
-            dir = random.random()
+            dir = self.normalizeAngle(random.random())
             dist = random.random()
             rndStep = Step(dir, dist)
             self.steps.append(rndStep)
+
+    """
+    Normalizes angle values from [0, 1] to [0, 2 * pi]
+
+    Args:
+            angle (float): angle to be normalized
+
+    Returns:
+            float: a normalized angle
+    """
+    def normalizeAngle(self, angle):
+        return angle * 2 * math.pi

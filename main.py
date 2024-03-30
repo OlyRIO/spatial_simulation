@@ -3,11 +3,13 @@ from Helpers.CalculationHelper import CalculationHelper
 from Helpers.PlotHelper import *
 from Helpers.DataGenerator import *
 import random
+import numpy
 
 
 def main():
     calcHelper = CalculationHelper()
     dataGenerator = DataGenerator(100)
+
     fly = Fly(calcHelper.generatePointInCircle())
 
     for step in dataGenerator.steps:
