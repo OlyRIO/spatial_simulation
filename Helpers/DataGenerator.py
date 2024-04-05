@@ -20,15 +20,15 @@ class DataGenerator:
     """
     steps = []
 
-    def __init__(self, stepNumber):
-        self.generateRndSteps(stepNumber)
+    def __init__(self) -> None:
+        self.calcHelper = calcHelper = CalculationHelper()
         
-    def generateRndSteps(self, stepNumber):
-        calcHelper = CalculationHelper()
-        
+    def generateRndSteps(self, stepNumber, stepSize):
+        self.steps.clear()
+
         for i in range(stepNumber):
             dir = self.normalizeAngle(random.random())
-            dist = random.random()
+            dist = random.uniform(0, stepSize)
             rndStep = Step(dir, dist)
             self.steps.append(rndStep)
 
