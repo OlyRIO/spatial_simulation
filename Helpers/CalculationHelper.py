@@ -2,10 +2,14 @@ import random, math
 from DTO.Point import *
 
 class CalculationHelper:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, circleRadius=0.5) -> None:
+        self.circleRadius = circleRadius
+        self.centerX = circleRadius
+        self.centerY = circleRadius
 
-    """
+    
+    def generatePointInCircle(self):
+        """
     Generates a point inside of a bounding circle defined by the given radius and interval [0, 1].
     
         Args:
@@ -16,15 +20,20 @@ class CalculationHelper:
         Returns:
             float: a point with x and y coordinates between [0, 1] inside of a circle with a given radius.
     """
-    def generatePointInCircle(self, circleRadius=0.5, centerX = 0.5, centerY=0.5):
-        r = circleRadius * math.sqrt(random.random())
+        r = self.circleRadius * math.sqrt(random.random())
         theta = random.random() * 2 * math.pi
-        x = centerX + r * math.cos(theta)
-        y = centerY + r * math.sin(theta)
+        x = self.centerX + r * math.cos(theta)
+        y = self.centerY + r * math.sin(theta)
 
         return Point(x, y)
     
-    """
+    def setCircle(self, circleRadius):
+        self.circleRadius = circleRadius
+        self.centerX = circleRadius
+        self.centerY = circleRadius
+
+    def isPointInCircle(self, point):
+        """
     Checks if a point is inside of a circle
     
         Args:
@@ -36,7 +45,6 @@ class CalculationHelper:
         Returns:
             bool: is point inside of the circle
     """
-    def isPointInCircle(self, point, radius=0.5, centerX = 0.5, centerY=0.5):
-        checkCondition = math.pow(point.x - centerX, 2) + math.pow(point.y - centerY, 2) < radius * radius 
+        checkCondition = math.pow(point.x - self.centerX, 2) + math.pow(point.y - self.centerY, 2) < self.circleRadius * self.circleRadius 
         return checkCondition
 

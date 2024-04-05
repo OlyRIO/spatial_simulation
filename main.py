@@ -8,7 +8,7 @@ import numpy
 
 
 def main():
-    simulation = SimulationHelper(flyNumber=1, stepNumber=700, stepSize=0.1, shouldPlot=True)
+    simulation = SimulationHelper(flyNumber=1, stepNumber=700, stepSize=0.1, arenaRadius=1, shouldPlot=True)
     simulation.generateWalks()
     simulation.plotFlies()
 

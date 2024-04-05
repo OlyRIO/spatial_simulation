@@ -21,7 +21,7 @@ class DataGenerator:
     steps = []
 
     def __init__(self) -> None:
-        self.calcHelper = calcHelper = CalculationHelper()
+        pass
         
     def generateRndSteps(self, stepNumber, stepSize):
         self.steps.clear()

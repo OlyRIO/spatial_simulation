@@ -28,13 +28,13 @@ class Fly:
         targetY = step.distance * math.sin(step.direction)
         return Point(self.currentPoint.x + targetX, self.currentPoint.y + targetY)
 
-    def moveInSequence(self, stepList):
+    def moveInSequence(self, stepList, circleRadius = 0.5):
         for step in stepList:
             targetPt = self.getTargetPoint(step)
-            self.moveTo(targetPt)
+            self.moveTo(targetPt, circleRadius)
 
-    def moveTo(self, targetPoint):
-        calcHelper = CalculationHelper()
+    def moveTo(self, targetPoint, circleRadius = 0.5):
+        calcHelper = CalculationHelper(circleRadius)
         if (targetPoint == self.currentPoint or not calcHelper.isPointInCircle(targetPoint)):
             return
         
