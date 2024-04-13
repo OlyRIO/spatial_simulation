@@ -4,14 +4,9 @@ from DTO.Step import *
 from Helpers.CalculationHelper import *
 
 class Fly:
-    currentPoint = Point(0, 0)
-    targetPoint = Point(0, 0)
-    pointList = []
-
     def __init__(self, point):
         self.currentPoint = point
-        self.pointList.append(point)
-
+        self.pointList = [point]
 
     """
     Moves the current point of the fly by the given step
@@ -26,15 +21,18 @@ class Fly:
     def getTargetPoint(self, step):
         targetX = step.distance * math.cos(step.direction)
         targetY = step.distance * math.sin(step.direction)
+
         return Point(self.currentPoint.x + targetX, self.currentPoint.y + targetY)
 
     def moveInSequence(self, stepList, circleRadius = 0.5):
         for step in stepList:
             targetPt = self.getTargetPoint(step)
+
             self.moveTo(targetPt, circleRadius)
 
     def moveTo(self, targetPoint, circleRadius = 0.5):
         calcHelper = CalculationHelper(circleRadius)
+
         if (targetPoint == self.currentPoint or not calcHelper.isPointInCircle(targetPoint)):
             return
         

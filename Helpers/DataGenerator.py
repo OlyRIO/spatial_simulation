@@ -18,14 +18,13 @@ class DataGenerator:
     generateRndSteps(stepNumber)
         generates a number of random steps equal to stepNumber
     """
-    steps = []
 
-    def __init__(self) -> None:
+    def __init__(self):
         pass
         
     def generateRndSteps(self, stepNumber, stepSize):
-        self.steps.clear()
-
+        self.steps = []
+        
         for i in range(stepNumber):
             dir = self.normalizeAngle(random.random())
             dist = random.uniform(0, stepSize)

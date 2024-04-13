@@ -2,7 +2,7 @@ import random, math
 from DTO.Point import *
 
 class CalculationHelper:
-    def __init__(self, circleRadius=0.5) -> None:
+    def __init__(self, circleRadius=0.5):
         self.circleRadius = circleRadius
         self.centerX = circleRadius
         self.centerY = circleRadius

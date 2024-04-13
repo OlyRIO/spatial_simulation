@@ -3,16 +3,11 @@ from Helpers.CalculationHelper import CalculationHelper
 from Helpers.PlotHelper import *
 from Helpers.DataGenerator import *
 from Helpers.SimulationHelper import *
-import random
-import numpy
-
 
 def main():
-    simulation = SimulationHelper(flyNumber=1, stepNumber=700, stepSize=0.1, arenaRadius=1, shouldPlot=True)
+    simulation = SimulationHelper(flyNumber=5, stepNumber=700, stepSize=0.1, arenaRadius=0.5, shouldPlot=True)
     simulation.generateWalks()
     simulation.plotFlies()
-
-
 
 if __name__=="__main__":
     main()
