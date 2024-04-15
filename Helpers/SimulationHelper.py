@@ -44,21 +44,27 @@ class SimulationHelper:
         dict = {"pos x": xCoords, "pos y": yCoords}
         df = pd.DataFrame(dict)
 
-        df.to_csv()
+        df.to_csv(self.getDataDirectory() + "/" + self.getCurrTime())
 
     def clearData(self):
         self.clearDirectory(self.getDataDirectory())
 
     def getDataDirectory(self):
         path = Path(os.getcwd())
-        parentDir = path.parent.absolute()
+        # parentDir = path.parent.absolute()
 
-        return parentDir + "/Data"
+        return str(path) + "\\Data"
 
-    def clearDirectory(path):
-        files = glob.glob(path)
-        for f in files:
-            os.remove(f)
+    def clearDirectory(self, directory_path):
+        try:
+            files = os.listdir(directory_path)
+            for file in files:
+                file_path = os.path.join(directory_path, file)
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+            print("All files deleted successfully.")
+        except OSError:
+            print("Error occurred while deleting files.")
 
     def getCurrTime(self):
         t = time.localtime
