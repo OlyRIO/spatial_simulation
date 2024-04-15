@@ -8,6 +8,7 @@ def main():
     simulation = SimulationHelper(flyNumber=5, stepNumber=700, stepSize=0.1, arenaRadius=0.5, shouldPlot=True)
     simulation.generateWalks()
     simulation.plotFlies()
+    simulation.exportAll()
 
 if __name__=="__main__":
     main()
