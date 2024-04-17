@@ -2,11 +2,15 @@ import math
 from DTO.Point import *
 from DTO.Step import *
 from Helpers.CalculationHelper import *
+import itertools
 
 class Fly:
+    id_iter = itertools.count(start=1)
+
     def __init__(self, point):
         self.currentPoint = point
         self.pointList = [point]
+        self.id = next(self.id_iter)
 
     """
     Moves the current point of the fly by the given step

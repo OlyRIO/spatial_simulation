@@ -35,16 +35,18 @@ class SimulationHelper:
     def exportAll(self):
         self.clearData()
 
+        counter = 1
         for fly in self.flyList:
-            self.exportFly(fly)
+            self.exportFly(fly, counter)
+            counter +=1
 
-    def exportFly(self, fly):
+    def exportFly(self, fly, id):
         xCoords = [point.x for point in fly.pointList]
         yCoords = [point.y for point in fly.pointList]
-        dict = {"pos x": xCoords, "pos y": yCoords}
+        dict = {"id" : fly.id, "pos x": xCoords, "pos y": yCoords}
         df = pd.DataFrame(dict)
 
-        df.to_csv(self.getDataDirectory() + "/" + self.getCurrTime())
+        df.to_csv(self.getDataDirectory() + "/" + str(fly.id) + "_" + self.getCurrTime())
 
     def clearData(self):
         self.clearDirectory(self.getDataDirectory())
