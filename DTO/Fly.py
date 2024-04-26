@@ -38,6 +38,7 @@ class Fly:
         calcHelper = CalculationHelper(circleRadius)
 
         if (targetPoint == self.currentPoint or not calcHelper.isPointInCircle(targetPoint)):
+            self.pointList.append(self.currentPoint)
             return
         
         self.currentPoint = targetPoint

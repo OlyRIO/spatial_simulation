@@ -53,7 +53,6 @@ class SimulationHelper:
 
     def getDataDirectory(self):
         path = Path(os.getcwd())
-        # parentDir = path.parent.absolute()
 
         return str(path) + "\\Data"
 
