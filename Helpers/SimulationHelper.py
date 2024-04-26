@@ -2,6 +2,7 @@ from DTO.Fly import *
 from Helpers.CalculationHelper import CalculationHelper
 from Helpers.PlotHelper import *
 from Helpers.DataGenerator import *
+from Helpers.DataUtilityHelper import *
 import pandas as pd
 import os
 import glob
@@ -46,7 +47,14 @@ class SimulationHelper:
         dict = {"id" : fly.id, "pos x": xCoords, "pos y": yCoords}
         df = pd.DataFrame(dict)
 
-        df.to_csv(self.getDataDirectory() + "/" + str(fly.id) + "_" + self.getCurrTime())
+        df.to_csv(self.getDataDirectory() + "/" + str(fly.id) + "_" + self.getCurrTime() + ".csv")
+
+    def exportAllFlyInteractions(self):
+        flyDict = {fly.id: pd.DataFrame({"pos x": [point.x for point in fly.pointList],
+                                      "pos y": [point.y for point in fly.pointList]})
+               for fly in self.flyList}
+        
+        distances_between_all_flies(flyDict).to_csv(self.getDataDirectory() + "/interactions.csv", index=False)
 
     def clearData(self):
         self.clearDirectory(self.getDataDirectory())
@@ -54,7 +62,7 @@ class SimulationHelper:
     def getDataDirectory(self):
         path = Path(os.getcwd())
 
-        return str(path) + "\\Data"
+        return str(path) + "/Data"
 
     def clearDirectory(self, directory_path):
         try:
@@ -65,7 +73,7 @@ class SimulationHelper:
                     os.remove(file_path)
             print("All files deleted successfully.")
         except OSError:
-            print("Error occurred while deleting files.")
+            print("Error occurred while deleting files. Try closing all files first.")
 
     def getCurrTime(self):
         t = time.localtime
