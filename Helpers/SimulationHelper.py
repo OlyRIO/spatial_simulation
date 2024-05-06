@@ -4,19 +4,22 @@ from Helpers.PlotHelper import *
 from Helpers.DataGenerator import *
 from Helpers.DataUtilityHelper import *
 import pandas as pd
+import numpy as np
 import os
 import glob
 import time
 from pathlib import Path
 
 class SimulationHelper:
-    def __init__(self, flyNumber, stepNumber, stepSize = 0.1, arenaRadius = 0.5, shouldPlot = False):
+    def __init__(self, flyNumber, stepNumber, stepSize = 0.1, arenaRadius = 0.5, distanceThreshold = 0.2, shouldPlot = False):
         calcHelper = CalculationHelper(arenaRadius)
         
+        self.shouldPlot = shouldPlot
         self.stepNumber = stepNumber
         self.stepSize = stepSize
         self.arenaRadius = arenaRadius
         self.flyList = [Fly(calcHelper.generatePointInCircle()) for x in range(flyNumber)]
+        self.distanceThreshold = distanceThreshold
         
     def generateWalks(self):
         dataGen = DataGenerator()
@@ -54,7 +57,11 @@ class SimulationHelper:
                                       "pos y": [point.y for point in fly.pointList]})
                for fly in self.flyList}
         
-        distances_between_all_flies(flyDict).to_csv(self.getDataDirectory() + "/interactions.csv", index=False)
+        allFliesDistances = distances_between_all_flies(flyDict)
+        allFliesDistances.to_csv(self.getDataDirectory() + "/distances.csv", index=True)
+        allFliesInteractions = getFlyInteractions(allFliesDistances, self.distanceThreshold)
+        allFliesInteractions.to_csv(self.getDataDirectory() + "/interactions.csv", index=False)
+
 
     def clearData(self):
         self.clearDirectory(self.getDataDirectory())

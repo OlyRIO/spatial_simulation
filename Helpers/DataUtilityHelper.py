@@ -33,3 +33,61 @@ def distances_between_all_flies(fly_dict):
         df[name] = np.round(distance, decimals=2)
 
     return df
+
+def getInteractionsFromColumn(col, threshold):
+   columnIndices = []
+
+   for i, num in enumerate(col, start=0):
+      if num <= threshold:
+         columnIndices.append(i)
+
+   return columnIndices
+
+def filter_less_than_or_equal_to_x(df, x):
+  filtered_df = df.applymap(lambda value: value <= x)
+  return filtered_df
+
+def getFlyInteractions(df, distanceThreshold):
+
+        edgelist = pd.DataFrame(
+        columns=[
+            "node_1",
+            "node_2",
+            "start_of_interaction",
+            "end_of_interaction",
+            "duration",
+            ]
+        )
+        
+        specific_array = df.values
+        
+        for column_index in range(specific_array.shape[1]):
+            node_1, node_2 = df.columns[column_index].split()
+            interactionMoments = getInteractionsFromColumn(specific_array[:, column_index], distanceThreshold)
+            subarray = []
+            result = []
+
+            for num in interactionMoments:
+                if len(subarray) == 0 or num == subarray[-1] + 1:
+                    subarray.append(num)
+                else:
+                    if len(subarray) > 1:
+                        result.append(subarray)
+                    subarray = [num]
+
+            for row in result:
+                start_of_interaction = row[0]
+                end_of_interaction = row[-1]
+                duration = end_of_interaction - start_of_interaction
+                data = {
+                    "node_1": node_1,
+                    "node_2": node_2,
+                    "start_of_interaction": int(start_of_interaction),
+                    "end_of_interaction": int(end_of_interaction),
+                    "duration": int(duration),
+                }
+
+                row = pd.DataFrame.from_dict(data, orient="index").T
+                edgelist = pd.concat([edgelist, row], ignore_index=True)
+        
+        return edgelist
