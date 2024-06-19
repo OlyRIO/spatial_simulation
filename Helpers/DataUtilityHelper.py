@@ -2,6 +2,9 @@ import itertools
 
 import numpy as np
 import pandas as pd
+from pathlib import Path
+import os
+import time
 
 def distances_between_all_flies(fly_dict):
     """Calculate distances between all pairs of flies.
@@ -42,10 +45,6 @@ def getInteractionsFromColumn(col, threshold):
          columnIndices.append(i)
 
    return columnIndices
-
-def filter_less_than_or_equal_to_x(df, x):
-  filtered_df = df.applymap(lambda value: value <= x)
-  return filtered_df
 
 def getFlyInteractions(df, distanceThreshold):
 
@@ -91,3 +90,38 @@ def getFlyInteractions(df, distanceThreshold):
                 edgelist = pd.concat([edgelist, row], ignore_index=True)
         
         return edgelist
+
+def clearAll():
+    clearDirectory(getDataDirectory())
+    clearDirectory(getAnimationDirectory())
+    clearDirectory(getPlotDirectory())
+
+def getDataDirectory():
+    path = Path(os.getcwd())
+
+    return str(path) + "/Data"
+
+def getAnimationDirectory():
+    path = Path(os.getcwd())
+
+    return str(path) + "/Visualization/Animation"
+
+def getPlotDirectory():
+    path = Path(os.getcwd())
+
+    return str(path) + "/Visualization/Static"
+
+def clearDirectory(directory_path):
+    try:
+        files = os.listdir(directory_path)
+        for file in files:
+            file_path = os.path.join(directory_path, file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        print("All files in {} deleted successfully." .format(directory_path))
+    except OSError:
+        print("Error occurred while deleting files. Try closing all files first.")
+
+def getCurrentTime():
+    current_time = time.strftime('%Y-%m-%d--%H-%M-%S')
+    return current_time
