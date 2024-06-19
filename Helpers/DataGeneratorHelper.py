@@ -1,6 +1,8 @@
 import random
 from DTO.Step import *
 from Helpers.CalculationHelper import *
+from Helpers.DataUtilityHelper import *
+from Helpers.ConstantHelper import *
 
 class DataGenerator:
     """
@@ -26,19 +28,9 @@ class DataGenerator:
         self.steps = []
         
         for i in range(stepNumber):
-            dir = self.normalizeAngle(random.random())
+            calcHelper = CalculationHelper(ARENA_RADIUS)
+
+            dir = calcHelper.normalizeAngle(random.random())
             dist = random.uniform(0, stepSize)
             rndStep = Step(dir, dist)
             self.steps.append(rndStep)
-
-    """
-    Normalizes angle values from [0, 1] to [0, 2 * pi]
-
-    Args:
-            angle (float): angle to be normalized
-
-    Returns:
-            float: a normalized angle
-    """
-    def normalizeAngle(self, angle):
-        return angle * 2 * math.pi

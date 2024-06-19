@@ -5,12 +5,12 @@ from Helpers.CalculationHelper import *
 import itertools
 
 class Fly:
-    id_iter = itertools.count(start=1)
+    id_iterator = itertools.count(start=1)
 
     def __init__(self, point):
         self.currentPoint = point
         self.pointList = [point]
-        self.id = next(self.id_iter)
+        self.id = next(self.id_iterator)
 
     """
     Moves the current point of the fly by the given step
@@ -28,13 +28,13 @@ class Fly:
 
         return Point(self.currentPoint.x + targetX, self.currentPoint.y + targetY)
 
-    def moveInSequence(self, stepList, circleRadius = 0.5):
+    def moveInSequence(self, stepList, circleRadius):
         for step in stepList:
-            targetPt = self.getTargetPoint(step)
+            targetPoint = self.getTargetPoint(step)
 
-            self.moveTo(targetPt, circleRadius)
+            self.moveTo(targetPoint, circleRadius)
 
-    def moveTo(self, targetPoint, circleRadius = 0.5):
+    def moveTo(self, targetPoint, circleRadius):
         calcHelper = CalculationHelper(circleRadius)
 
         if (targetPoint == self.currentPoint or not calcHelper.isPointInCircle(targetPoint)):
