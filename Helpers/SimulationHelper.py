@@ -1,25 +1,23 @@
 from DTO.Fly import *
 from Helpers.CalculationHelper import CalculationHelper
 from Helpers.PlotHelper import *
-from Helpers.DataGenerator import *
+from Helpers.DataGeneratorHelper import *
 from Helpers.DataUtilityHelper import *
+from Helpers.DataUtilityHelper import *
+from Helpers.ConstantHelper import *
 import pandas as pd
 import numpy as np
-import os
 import glob
-import time
-from pathlib import Path
 
 class SimulationHelper:
-    def __init__(self, flyNumber, stepNumber, stepSize = 0.1, arenaRadius = 0.5, distanceThreshold = 0.2, shouldPlot = False):
-        calcHelper = CalculationHelper(arenaRadius)
+    def __init__(self):
+        calcHelper = CalculationHelper(ARENA_RADIUS)
         
-        self.shouldPlot = shouldPlot
-        self.stepNumber = stepNumber
-        self.stepSize = stepSize
-        self.arenaRadius = arenaRadius
-        self.flyList = [Fly(calcHelper.generatePointInCircle()) for x in range(flyNumber)]
-        self.distanceThreshold = distanceThreshold
+        self.stepNumber = STEP_NUMBER
+        self.stepSize = STEP_SIZE
+        self.arenaRadius = ARENA_RADIUS
+        self.flyList = [Fly(calcHelper.generatePointInCircle()) for x in range(FLY_NUMBER)]
+        self.distanceThreshold = DISTANCE_THRESHHOLD
         
     def generateWalks(self):
         dataGen = DataGenerator()
@@ -28,29 +26,27 @@ class SimulationHelper:
             dataGen.generateRndSteps(self.stepNumber, self.stepSize)
             fly.moveInSequence(dataGen.steps, self.arenaRadius)
 
-    def plotFlies(self):
-        plotHelper = PlotHelper()
-        
-        for fly in self.flyList:
-            xCoords, yCoords = zip(*[(point.x, point.y) for point in fly.pointList])
-            plotHelper.setCoords(xCoords, yCoords)
-            plotHelper.plot(self.arenaRadius)
-
     def exportAll(self):
-        self.clearData()
+        clearAll()
 
-        counter = 1
         for fly in self.flyList:
-            self.exportFly(fly, counter)
-            counter +=1
+            self.exportFly(fly)
 
-    def exportFly(self, fly, id):
+    def exportFly(self, fly):
+        plotHelper = PlotHelper()
         xCoords = [point.x for point in fly.pointList]
         yCoords = [point.y for point in fly.pointList]
+
+        plotHelper.setCoords(xCoords, yCoords)
+
         dict = {"id" : fly.id, "pos x": xCoords, "pos y": yCoords}
         df = pd.DataFrame(dict)
-
-        df.to_csv(self.getDataDirectory() + "/" + str(fly.id) + "_" + self.getCurrTime() + ".csv")
+        animation_filename = getAnimationDirectory() + "/" + str(fly.id) + "_" + getCurrentTime()+ ".gif"
+        plot_filename = getPlotDirectory() + "/" + str(fly.id) + "_" + getCurrentTime() + ".png"
+        
+        df.to_csv(getDataDirectory() + "/" + str(fly.id) + "_" + getCurrentTime() + ".csv")
+        plotHelper.exportAnimation(animation_filename)
+        plotHelper.exportPlot(plot_filename)
 
     def exportAllFlyInteractions(self):
         flyDict = {fly.id: pd.DataFrame({"pos x": [point.x for point in fly.pointList],
@@ -58,31 +54,6 @@ class SimulationHelper:
                for fly in self.flyList}
         
         allFliesDistances = distances_between_all_flies(flyDict)
-        allFliesDistances.to_csv(self.getDataDirectory() + "/distances.csv", index=True)
+        allFliesDistances.to_csv(getDataDirectory() + "/distances.csv", index=True)
         allFliesInteractions = getFlyInteractions(allFliesDistances, self.distanceThreshold)
-        allFliesInteractions.to_csv(self.getDataDirectory() + "/interactions.csv", index=False)
-
-
-    def clearData(self):
-        self.clearDirectory(self.getDataDirectory())
-
-    def getDataDirectory(self):
-        path = Path(os.getcwd())
-
-        return str(path) + "/Data"
-
-    def clearDirectory(self, directory_path):
-        try:
-            files = os.listdir(directory_path)
-            for file in files:
-                file_path = os.path.join(directory_path, file)
-                if os.path.isfile(file_path):
-                    os.remove(file_path)
-            print("All files deleted successfully.")
-        except OSError:
-            print("Error occurred while deleting files. Try closing all files first.")
-
-    def getCurrTime(self):
-        t = time.localtime
-        current_time = time.strftime('%Y-%m-%d--%H-%M-%S')
-        return current_time
+        allFliesInteractions.to_csv(getDataDirectory() + "/interactions.csv", index=False)
