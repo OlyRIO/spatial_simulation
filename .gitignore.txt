@@ -8,3 +8,5 @@ DTO/__pycache__
 DTO/__pycache__/*
 Helpers/__pycache__
 Helpers/__pycache__/*
+*.pyc
+*.pyo
