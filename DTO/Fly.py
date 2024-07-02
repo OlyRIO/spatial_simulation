@@ -29,8 +29,8 @@ class Fly:
 
         return Point(self.currentPoint.x + targetX, self.currentPoint.y + targetY)
 
-    def moveInSequence(self, stepList, circleRadius):
-        calcHelper = CalculationHelper(circleRadius)
+    def moveInSequence(self, stepList):
+        calcHelper = CalculationHelper()
         dataGenerator = DataGenerator()
 
         for step in stepList:

@@ -6,11 +6,10 @@ from Helpers.DataHelper import *
 from Helpers.ConstantHelper import *
 import pandas as pd
 import numpy as np
-import glob
 
 class SimulationHelper:
     def __init__(self):
-        calcHelper = CalculationHelper(ARENA_RADIUS_SCALED)
+        calcHelper = CalculationHelper()
         
         self.stepNumber = STEP_NUMBER
         self.arenaRadius = ARENA_RADIUS_SCALED

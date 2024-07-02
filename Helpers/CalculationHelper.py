@@ -1,8 +1,9 @@
 import random, math
 from DTO.Point import *
+from Helpers.ConstantHelper import *
 
 class CalculationHelper:
-    def __init__(self, circleRadius):
+    def __init__(self, circleRadius = ARENA_RADIUS_SCALED):
         self.circleRadius = circleRadius
         self.centerX = circleRadius
         self.centerY = circleRadius
