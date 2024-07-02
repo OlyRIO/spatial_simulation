@@ -1,4 +1,10 @@
-Data
-Data/*
+Input
+Input/*
+Output
+Output/*
 Visualization
 Visualization/*
+DTO/__pycache__
+DTO/__pycache__/*
+Helpers/__pycache__
+Helpers/__pycache__/*
