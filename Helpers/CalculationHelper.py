@@ -2,7 +2,7 @@ import random, math
 from DTO.Point import *
 
 class CalculationHelper:
-    def __init__(self, circleRadius=0.5):
+    def __init__(self, circleRadius):
         self.circleRadius = circleRadius
         self.centerX = circleRadius
         self.centerY = circleRadius
@@ -20,6 +20,7 @@ class CalculationHelper:
         Returns:
             float: a point with x and y coordinates between [0, 1] inside of a circle with a given radius.
     """
+        
         r = self.circleRadius * math.sqrt(random.random())
         theta = random.random() * 2 * math.pi
         x = self.centerX + r * math.cos(theta)
@@ -34,7 +35,7 @@ class CalculationHelper:
 
     def isPointInCircle(self, point):
         """
-    Checks if a point is inside of a circle
+        Checks if a point is inside of a circle
     
         Args:
             point (point): Point to be checked
@@ -45,6 +46,22 @@ class CalculationHelper:
         Returns:
             bool: is point inside of the circle
     """
-        checkCondition = math.pow(point.x - self.centerX, 2) + math.pow(point.y - self.centerY, 2) < self.circleRadius * self.circleRadius 
+        
+        checkCondition = math.pow(point.x - self.centerX, 2) + math.pow(point.y - self.centerY, 2) \
+        < self.circleRadius * self.circleRadius 
+
         return checkCondition
+    
+    def normalizeAngle(self, angle):
+        """
+    Normalizes angle values from [0, 1] to [0, 2 * pi]
+
+    Args:
+            angle (float): angle to be normalized
+
+    Returns:
+            float: a normalized angle
+    """
+        
+        return angle * 2 * math.pi
 

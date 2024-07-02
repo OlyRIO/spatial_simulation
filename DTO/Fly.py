@@ -2,11 +2,16 @@ import math
 from DTO.Point import *
 from DTO.Step import *
 from Helpers.CalculationHelper import *
+from Helpers.DataGeneratorHelper import *
+import itertools
 
 class Fly:
+    id_iterator = itertools.count(start=1)
+
     def __init__(self, point):
         self.currentPoint = point
         self.pointList = [point]
+        self.id = next(self.id_iterator)
 
     """
     Moves the current point of the fly by the given step
@@ -24,17 +29,18 @@ class Fly:
 
         return Point(self.currentPoint.x + targetX, self.currentPoint.y + targetY)
 
-    def moveInSequence(self, stepList, circleRadius = 0.5):
-        for step in stepList:
-            targetPt = self.getTargetPoint(step)
-
-            self.moveTo(targetPt, circleRadius)
-
-    def moveTo(self, targetPoint, circleRadius = 0.5):
+    def moveInSequence(self, stepList, circleRadius):
         calcHelper = CalculationHelper(circleRadius)
+        dataGenerator = DataGenerator()
 
-        if (targetPoint == self.currentPoint or not calcHelper.isPointInCircle(targetPoint)):
-            return
-        
+        for step in stepList:
+            targetPoint = self.getTargetPoint(step)
+
+            while targetPoint == self.currentPoint or not calcHelper.isPointInCircle(targetPoint):
+                targetPoint = self.getTargetPoint(dataGenerator.generateRandomStep())
+
+            self.moveTo(targetPoint)
+
+    def moveTo(self, targetPoint):
         self.currentPoint = targetPoint
         self.pointList.append(self.currentPoint)
