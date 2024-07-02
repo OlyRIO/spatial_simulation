@@ -1,10 +1,8 @@
 import itertools
-
 import numpy as np
 import pandas as pd
-from pathlib import Path
-import os
-import time
+from Helpers.ConstantHelper import *
+from Helpers.UtilityHelper import *
 
 def distances_between_all_flies(fly_dict):
     """Calculate distances between all pairs of flies.
@@ -20,6 +18,7 @@ def distances_between_all_flies(fly_dict):
     """
 
     df = pd.DataFrame()
+    
     for fly1_key, fly2_key in list(itertools.combinations(fly_dict.keys(), 2)):
         df1 = fly_dict[fly1_key].copy(deep=True)
         df2 = fly_dict[fly2_key].copy(deep=True)
@@ -91,37 +90,30 @@ def getFlyInteractions(df, distanceThreshold):
         
         return edgelist
 
-def clearAll():
-    clearDirectory(getDataDirectory())
-    clearDirectory(getAnimationDirectory())
-    clearDirectory(getPlotDirectory())
 
-def getDataDirectory():
-    path = Path(os.getcwd())
+def getDistancesData():
+    """ Gets the real-life distances (expressed in millimeters) between the flies used to simulate data and normalizes them to
+    the [0, 1] interval
+    
+    Returns:
+    - distances (numpy.array): A numpy array containing real-life distances between flies. See the documentation for more information on 
+    input data formatting.
+    """
 
-    return str(path) + "/Data"
+    distances = np.load(getInputDirectory() + "/distances.npy")
+    normalized_distances = normalizeDistancesData(distances)
 
-def getAnimationDirectory():
-    path = Path(os.getcwd())
+    return normalized_distances
 
-    return str(path) + "/Visualization/Animation"
+def normalizeDistancesData(distances):
+    """ Normalizes the real-life fly distances to a [0, 1] interval
+    
+    Returns:
+    - distances_normalized  (numpy.array): A numpy array containing normalized distances between flies.
+    """
 
-def getPlotDirectory():
-    path = Path(os.getcwd())
+    distances_normalized = distances
+    f = lambda x: x * SCALING_RATIO
+    distances_normalized = f(distances)
 
-    return str(path) + "/Visualization/Static"
-
-def clearDirectory(directory_path):
-    try:
-        files = os.listdir(directory_path)
-        for file in files:
-            file_path = os.path.join(directory_path, file)
-            if os.path.isfile(file_path):
-                os.remove(file_path)
-        print("All files in {} deleted successfully." .format(directory_path))
-    except OSError:
-        print("Error occurred while deleting files. Try closing all files first.")
-
-def getCurrentTime():
-    current_time = time.strftime('%Y-%m-%d--%H-%M-%S')
-    return current_time
+    return distances_normalized
