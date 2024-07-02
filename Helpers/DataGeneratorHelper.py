@@ -1,7 +1,7 @@
 import random
 from DTO.Step import *
 from Helpers.CalculationHelper import *
-from Helpers.DataUtilityHelper import *
+from Helpers.DataHelper import *
 from Helpers.ConstantHelper import *
 
 class DataGenerator:
@@ -22,15 +22,24 @@ class DataGenerator:
     """
 
     def __init__(self):
-        pass
+        self.normalized_distances = getDistancesData()
         
-    def generateRndSteps(self, stepNumber, stepSize):
+    def generateRandomSteps(self, stepNumber):
+        """ Generates random steps
+        Parameters:
+
+        stepNumber (integer): Number of steps to be generated
+        """
+
         self.steps = []
+        calcHelper = CalculationHelper(ARENA_RADIUS_SCALED)
         
         for i in range(stepNumber):
-            calcHelper = CalculationHelper(ARENA_RADIUS)
+            self.steps.append(self.generateRandomStep())
 
-            dir = calcHelper.normalizeAngle(random.random())
-            dist = random.uniform(0, stepSize)
-            rndStep = Step(dir, dist)
-            self.steps.append(rndStep)
+    def generateRandomStep(self):
+        calcHelper = CalculationHelper(ARENA_RADIUS_SCALED)
+        dir = calcHelper.normalizeAngle(random.random())
+        dist = getRandomElementFromList(self.normalized_distances)
+        
+        return Step(dir, dist)

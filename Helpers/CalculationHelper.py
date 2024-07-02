@@ -20,6 +20,7 @@ class CalculationHelper:
         Returns:
             float: a point with x and y coordinates between [0, 1] inside of a circle with a given radius.
     """
+        
         r = self.circleRadius * math.sqrt(random.random())
         theta = random.random() * 2 * math.pi
         x = self.centerX + r * math.cos(theta)
@@ -45,7 +46,10 @@ class CalculationHelper:
         Returns:
             bool: is point inside of the circle
     """
-        checkCondition = math.pow(point.x - self.centerX, 2) + math.pow(point.y - self.centerY, 2) < self.circleRadius * self.circleRadius 
+        
+        checkCondition = math.pow(point.x - self.centerX, 2) + math.pow(point.y - self.centerY, 2) \
+        < self.circleRadius * self.circleRadius 
+
         return checkCondition
     
     def normalizeAngle(self, angle):
@@ -58,5 +62,6 @@ class CalculationHelper:
     Returns:
             float: a normalized angle
     """
+        
         return angle * 2 * math.pi
 

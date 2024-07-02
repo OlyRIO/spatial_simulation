@@ -2,6 +2,7 @@ import math
 from DTO.Point import *
 from DTO.Step import *
 from Helpers.CalculationHelper import *
+from Helpers.DataGeneratorHelper import *
 import itertools
 
 class Fly:
@@ -29,17 +30,17 @@ class Fly:
         return Point(self.currentPoint.x + targetX, self.currentPoint.y + targetY)
 
     def moveInSequence(self, stepList, circleRadius):
+        calcHelper = CalculationHelper(circleRadius)
+        dataGenerator = DataGenerator()
+
         for step in stepList:
             targetPoint = self.getTargetPoint(step)
 
-            self.moveTo(targetPoint, circleRadius)
+            while targetPoint == self.currentPoint or not calcHelper.isPointInCircle(targetPoint):
+                targetPoint = self.getTargetPoint(dataGenerator.generateRandomStep())
 
-    def moveTo(self, targetPoint, circleRadius):
-        calcHelper = CalculationHelper(circleRadius)
+            self.moveTo(targetPoint)
 
-        if (targetPoint == self.currentPoint or not calcHelper.isPointInCircle(targetPoint)):
-            self.pointList.append(self.currentPoint)
-            return
-        
+    def moveTo(self, targetPoint):
         self.currentPoint = targetPoint
         self.pointList.append(self.currentPoint)

@@ -1,19 +1,22 @@
 import numpy as np
-import DTO.Point
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from Helpers.DataUtilityHelper import *
+from Helpers.DataHelper import *
 from Helpers.ConstantHelper import *
 
 class PlotHelper:
+    writer = animation.PillowWriter(fps=15,
+                                metadata=dict(artist='Me'),
+                                bitrate=300)
+    
     def __init__(self):
         pass
 
-    def setCoords(self, xCoords, yCoords):
+    def setCoordinates(self, xCoords, yCoords):
         self.xCoords = np.array(xCoords)
         self.yCoords = np.array(yCoords)
 
-    def exportPlot(self, filename, circleRadius = ARENA_RADIUS):
+    def exportPlot(self, filename, circleRadius = ARENA_RADIUS_SCALED):
         plt.figure()
         ax = plt.gca()
         ax.set_aspect('equal')
@@ -30,7 +33,7 @@ class PlotHelper:
         if (SHOULD_PLOT):
             plt.show()
 
-    def exportAnimation(self, filename, circleRadius = ARENA_RADIUS):
+    def exportAnimation(self, filename, circleRadius = ARENA_RADIUS_SCALED):
         fig = plt.figure()
         ax = plt.gca()
         ax.set_aspect('equal')
@@ -66,11 +69,7 @@ class PlotHelper:
 
         ani = animation.FuncAnimation(fig, run, data_gen, interval=50, init_func=init,
                               save_count = STEP_NUMBER)
-
-        writer = animation.PillowWriter(fps=15,
-                                metadata=dict(artist='Me'),
-                                bitrate=1800)
         
-        ani.save(filename, writer=writer)
+        ani.save(filename, writer = self.writer)
 
 

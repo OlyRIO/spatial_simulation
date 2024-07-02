@@ -2,8 +2,7 @@ from DTO.Fly import *
 from Helpers.CalculationHelper import CalculationHelper
 from Helpers.PlotHelper import *
 from Helpers.DataGeneratorHelper import *
-from Helpers.DataUtilityHelper import *
-from Helpers.DataUtilityHelper import *
+from Helpers.DataHelper import *
 from Helpers.ConstantHelper import *
 import pandas as pd
 import numpy as np
@@ -11,20 +10,19 @@ import glob
 
 class SimulationHelper:
     def __init__(self):
-        calcHelper = CalculationHelper(ARENA_RADIUS)
+        calcHelper = CalculationHelper(ARENA_RADIUS_SCALED)
         
         self.stepNumber = STEP_NUMBER
-        self.stepSize = STEP_SIZE
-        self.arenaRadius = ARENA_RADIUS
+        self.arenaRadius = ARENA_RADIUS_SCALED
         self.flyList = [Fly(calcHelper.generatePointInCircle()) for x in range(FLY_NUMBER)]
-        self.distanceThreshold = DISTANCE_THRESHHOLD
+        self.distanceThreshold = INTERACTION_DISTANCE_THRESHHOLD
         
     def generateWalks(self):
-        dataGen = DataGenerator()
+        dataGenerator = DataGenerator()
 
         for fly in self.flyList:
-            dataGen.generateRndSteps(self.stepNumber, self.stepSize)
-            fly.moveInSequence(dataGen.steps, self.arenaRadius)
+            dataGenerator.generateRandomSteps(self.stepNumber)
+            fly.moveInSequence(dataGenerator.steps, self.arenaRadius)
 
     def exportAll(self):
         clearAll()
@@ -34,18 +32,21 @@ class SimulationHelper:
 
     def exportFly(self, fly):
         plotHelper = PlotHelper()
-        xCoords = [point.x for point in fly.pointList]
-        yCoords = [point.y for point in fly.pointList]
+        xCoordinates = [point.x for point in fly.pointList]
+        yCoordinates = [point.y for point in fly.pointList]
 
-        plotHelper.setCoords(xCoords, yCoords)
+        plotHelper.setCoordinates(xCoordinates, yCoordinates)
 
-        dict = {"id" : fly.id, "pos x": xCoords, "pos y": yCoords}
+        dict = {"id" : fly.id, "pos x": xCoordinates, "pos y": yCoordinates}
         df = pd.DataFrame(dict)
         animation_filename = getAnimationDirectory() + "/" + str(fly.id) + "_" + getCurrentTime()+ ".gif"
         plot_filename = getPlotDirectory() + "/" + str(fly.id) + "_" + getCurrentTime() + ".png"
         
-        df.to_csv(getDataDirectory() + "/" + str(fly.id) + "_" + getCurrentTime() + ".csv")
-        plotHelper.exportAnimation(animation_filename)
+        df.to_csv(getOutputDirectory() + "/" + str(fly.id) + "_" + getCurrentTime() + ".csv")
+
+        if (SHOULD_ANIMATE):
+            plotHelper.exportAnimation(animation_filename)
+
         plotHelper.exportPlot(plot_filename)
 
     def exportAllFlyInteractions(self):
@@ -54,6 +55,6 @@ class SimulationHelper:
                for fly in self.flyList}
         
         allFliesDistances = distances_between_all_flies(flyDict)
-        allFliesDistances.to_csv(getDataDirectory() + "/distances.csv", index=True)
+        allFliesDistances.to_csv(getOutputDirectory() + "/distances.csv", index = True)
         allFliesInteractions = getFlyInteractions(allFliesDistances, self.distanceThreshold)
-        allFliesInteractions.to_csv(getDataDirectory() + "/interactions.csv", index=False)
+        allFliesInteractions.to_csv(getOutputDirectory() + "/interactions.csv", index = False)
