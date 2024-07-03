@@ -1,8 +1,8 @@
 import random
-from DTO.Step import *
-from Helpers.CalculationHelper import *
-from Helpers.DataHelper import *
-from Helpers.ConstantHelper import *
+from DTO.step import *
+from helpers.calculation_helper import *
+from helpers.data_helper import *
+from helpers.constant_helpers.simulation_constant_helper import *
 
 class DataGenerator:
     """

@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from Helpers.DataHelper import *
-from Helpers.ConstantHelper import *
+from helpers.data_helper import *
+from helpers.constant_helpers.simulation_constant_helper import *
 
 class PlotHelper:
     writer = animation.PillowWriter(fps=15,
@@ -32,6 +32,8 @@ class PlotHelper:
 
         if (SHOULD_PLOT):
             plt.show()
+        
+        plt.close()
 
     def exportAnimation(self, filename, circleRadius = ARENA_RADIUS_SCALED):
         fig = plt.figure()

@@ -1,9 +1,10 @@
-from DTO.Fly import *
-from Helpers.CalculationHelper import CalculationHelper
-from Helpers.PlotHelper import *
-from Helpers.DataGeneratorHelper import *
-from Helpers.DataHelper import *
-from Helpers.ConstantHelper import *
+from DTO.fly import *
+from helpers.calculation_helper import CalculationHelper
+from helpers.plot_helper import *
+from helpers.data_generator_helper import *
+from helpers.data_helper import *
+from helpers.constant_helpers.simulation_constant_helper import *
+from helpers.constant_helpers.directories_constant_helper import *
 import pandas as pd
 import numpy as np
 
@@ -21,7 +22,7 @@ class SimulationHelper:
 
         for fly in self.flyList:
             dataGenerator.generateRandomSteps(self.stepNumber)
-            fly.moveInSequence(dataGenerator.steps, self.arenaRadius)
+            fly.moveInSequence(dataGenerator.steps)
 
     def exportAll(self):
         clearAll()
@@ -38,15 +39,19 @@ class SimulationHelper:
 
         dict = {"id" : fly.id, "pos x": xCoordinates, "pos y": yCoordinates}
         df = pd.DataFrame(dict)
-        animation_filename = getAnimationDirectory() + "/" + str(fly.id) + "_" + getCurrentTime()+ ".gif"
-        plot_filename = getPlotDirectory() + "/" + str(fly.id) + "_" + getCurrentTime() + ".png"
+        os.makedirs(MOVEMENT_DIR, exist_ok=True)
+        os.makedirs(ANIMATION_DIR, exist_ok=True)
+        os.makedirs(PLOT_DIR, exist_ok=True)
         
-        df.to_csv(getOutputDirectory() + "/" + str(fly.id) + "_" + getCurrentTime() + ".csv")
-
+        animation_filename = ANIMATION_DIR + "/" + str(fly.id) + "_" + getCurrentTime()+ ".gif"
+        plot_filename = PLOT_DIR + "/" + str(fly.id) + "_" + getCurrentTime() + ".png"
+        movement_filename = MOVEMENT_DIR + "/" + str(fly.id) + "_" + getCurrentTime() + ".csv"
+        
+        df.to_csv(movement_filename)
+        plotHelper.exportPlot(plot_filename)
+        
         if (SHOULD_ANIMATE):
             plotHelper.exportAnimation(animation_filename)
-
-        plotHelper.exportPlot(plot_filename)
 
     def exportAllFlyInteractions(self):
         flyDict = {fly.id: pd.DataFrame({"pos x": [point.x for point in fly.pointList],
@@ -54,6 +59,10 @@ class SimulationHelper:
                for fly in self.flyList}
         
         allFliesDistances = distances_between_all_flies(flyDict)
-        allFliesDistances.to_csv(getOutputDirectory() + "/distances.csv", index = True)
         allFliesInteractions = getFlyInteractions(allFliesDistances, self.distanceThreshold)
-        allFliesInteractions.to_csv(getOutputDirectory() + "/interactions.csv", index = False)
+        
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
+        
+        allFliesDistances.to_csv(OUTPUT_DIR + "/distances.csv", index = True)
+        allFliesInteractions.to_csv(OUTPUT_DIR + "/interactions.csv", index = False)
+        saveInteractionsAsGraph(allFliesInteractions)

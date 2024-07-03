@@ -1,8 +1,13 @@
 import itertools
 import numpy as np
 import pandas as pd
-from Helpers.ConstantHelper import *
-from Helpers.UtilityHelper import *
+import networkx as nx
+import matplotlib.pyplot as plt
+from helpers.constant_helpers.simulation_constant_helper import *
+from helpers.constant_helpers.directories_constant_helper import *
+from helpers.utility_helper import *
+from helpers.graph_helper import *
+
 
 def distances_between_all_flies(fly_dict):
     """Calculate distances between all pairs of flies.
@@ -100,7 +105,7 @@ def getDistancesData():
     input data formatting.
     """
 
-    distances = np.load(getInputDirectory() + "/distances.npy")
+    distances = np.load(INPUT_DIR + "/distances.npy")
     normalized_distances = normalizeDistancesData(distances)
 
     return normalized_distances
@@ -117,3 +122,42 @@ def normalizeDistancesData(distances):
     distances_normalized = f(distances)
 
     return distances_normalized
+
+def saveInteractionsAsGraph(distances):
+    distances = distances.sort_values("start_of_interaction")
+    G = nx.Graph()
+
+    for _, row in distances.iterrows():
+        node_1, node_2 = row["node_1"], row["node_2"]
+        duration = row["duration"]
+
+        if G.has_edge(node_1, node_2):
+            G[node_1][node_2]["count"] += 1
+            G[node_1][node_2]["interaction_times_list"].append(duration)
+            G[node_1][node_2]["total_interaction_times"] += duration
+
+        else:
+            G.add_edge(
+                node_1,
+                node_2,
+                count=1,
+                total_interaction_times=duration,
+                interaction_times_list=[duration],
+            )
+
+    os.makedirs(NETWORKS_DIR, exist_ok=True)
+    nx.write_gml(G, NETWORKS_DIR + "/" + "CsCh-" + getCurrentTime() + ".gml")
+
+def exportGraphGlobalMeasures():
+    graphs = loadFilesFromFolder(NETWORKS_DIR, file_format=".gml")
+
+    total = pd.DataFrame()
+    
+    for group_name, group_path in graphs.items():
+        G = nx.read_gml(group_path)
+        df = graph_global_measures(G, group_name)
+        total = pd.concat([total, df], axis=1)
+    
+    SAVE_PATH = os.path.join(OUTPUT_DIR, "total.csv")
+    total = total.T
+    total.to_csv(SAVE_PATH)

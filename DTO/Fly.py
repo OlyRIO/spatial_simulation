@@ -1,8 +1,8 @@
 import math
-from DTO.Point import *
-from DTO.Step import *
-from Helpers.CalculationHelper import *
-from Helpers.DataGeneratorHelper import *
+from DTO.point import *
+from DTO.step import *
+from helpers.calculation_helper import *
+from helpers.data_generator_helper import *
 import itertools
 
 class Fly:
