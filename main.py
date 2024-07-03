@@ -13,9 +13,9 @@ from scipy import stats
 def main():
     simulation = SimulationHelper()
     
-    # simulation.generateWalks()
-    # simulation.exportAll()
-    # simulation.exportAllFlyInteractions()  
+    simulation.generateWalks()
+    simulation.exportAll()
+    simulation.exportAllFlyInteractions()  
     exportGraphGlobalMeasures()
     
 if __name__=="__main__":
