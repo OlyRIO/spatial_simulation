@@ -12,11 +12,11 @@ class PlotHelper:
     def __init__(self):
         pass
 
-    def setCoordinates(self, xCoords, yCoords):
+    def set_coordinates(self, xCoords, yCoords):
         self.xCoords = np.array(xCoords)
         self.yCoords = np.array(yCoords)
 
-    def exportPlot(self, filename, circleRadius = ARENA_RADIUS_SCALED):
+    def export_plot(self, filename, circleRadius = ARENA_RADIUS_SCALED):
         plt.figure()
         ax = plt.gca()
         ax.set_aspect('equal')
@@ -35,7 +35,7 @@ class PlotHelper:
         
         plt.close()
 
-    def exportAnimation(self, filename, circleRadius = ARENA_RADIUS_SCALED):
+    def export_animation(self, filename, circleRadius = ARENA_RADIUS_SCALED):
         fig = plt.figure()
         ax = plt.gca()
         ax.set_aspect('equal')

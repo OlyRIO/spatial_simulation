@@ -23,7 +23,7 @@ STEP_NUMBER = SAMPLING_FREQUENCY * SIMULATION_DURATION
 # STEP_SIZE = 0.1
 
 # Minimum distance between two flies required to categorise it as an interaction measured in millimeters, normalized to [0, 1] 
-INTERACTION_DISTANCE_THRESHHOLD = 5 * SCALING_RATIO
+INTERACTION_DISTANCE_THRESHOLD = 5 * SCALING_RATIO
 
 # Whether or not the application should show plots
 SHOULD_PLOT = False

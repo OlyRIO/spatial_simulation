@@ -41,7 +41,7 @@ def distances_between_all_flies(fly_dict):
 
     return df
 
-def getInteractionsFromColumn(col, threshold):
+def get_interactions_from_column(col, threshold):
    columnIndices = []
 
    for i, num in enumerate(col, start=0):
@@ -50,7 +50,7 @@ def getInteractionsFromColumn(col, threshold):
 
    return columnIndices
 
-def getFlyInteractions(df, distanceThreshold):
+def get_fly_interactions(df, distanceThreshold):
 
         edgelist = pd.DataFrame(
         columns=[
@@ -66,7 +66,7 @@ def getFlyInteractions(df, distanceThreshold):
         
         for column_index in range(specific_array.shape[1]):
             node_1, node_2 = df.columns[column_index].split()
-            interactionMoments = getInteractionsFromColumn(specific_array[:, column_index], distanceThreshold)
+            interactionMoments = get_interactions_from_column(specific_array[:, column_index], distanceThreshold)
             subarray = []
             result = []
 
@@ -96,7 +96,7 @@ def getFlyInteractions(df, distanceThreshold):
         return edgelist
 
 
-def getDistancesData():
+def get_distances_data():
     """ Gets the real-life distances (expressed in millimeters) between the flies used to simulate data and normalizes them to
     the [0, 1] interval
     
@@ -106,11 +106,11 @@ def getDistancesData():
     """
 
     distances = np.load(INPUT_DIR + "/distances.npy")
-    normalized_distances = normalizeDistancesData(distances)
+    normalized_distances = normalize_distances_data(distances)
 
     return normalized_distances
 
-def normalizeDistancesData(distances):
+def normalize_distances_data(distances):
     """ Normalizes the real-life fly distances to a [0, 1] interval
     
     Returns:
@@ -123,7 +123,7 @@ def normalizeDistancesData(distances):
 
     return distances_normalized
 
-def saveInteractionsAsGraph(distances):
+def save_as_graph(distances):
     distances = distances.sort_values("start_of_interaction")
     G = nx.Graph()
 
@@ -146,10 +146,10 @@ def saveInteractionsAsGraph(distances):
             )
 
     os.makedirs(NETWORKS_DIR, exist_ok=True)
-    nx.write_gml(G, NETWORKS_DIR + "/" + "CsCh-" + getCurrentTime() + ".gml")
+    nx.write_gml(G, NETWORKS_DIR + "/" + "CsCh-" + get_current_time() + ".gml")
 
-def exportGraphGlobalMeasures():
-    graphs = loadFilesFromFolder(NETWORKS_DIR, file_format=".gml")
+def export_graph_global_measures():
+    graphs = load_files_from_directory(NETWORKS_DIR, file_format=".gml")
 
     total = pd.DataFrame()
     

@@ -13,10 +13,10 @@ from scipy import stats
 def main():
     simulation = SimulationHelper()
     
-    simulation.generateWalks()
-    simulation.exportAll()
-    simulation.exportAllFlyInteractions()  
-    exportGraphGlobalMeasures()
+    simulation.generate_walks()
+    simulation.export_all()
+    simulation.export_all_fly_interactions()  
+    export_graph_global_measures()
     
 if __name__=="__main__":
     main()  

@@ -12,57 +12,57 @@ class SimulationHelper:
     def __init__(self):
         calcHelper = CalculationHelper()
         
-        self.stepNumber = STEP_NUMBER
-        self.arenaRadius = ARENA_RADIUS_SCALED
-        self.flyList = [Fly(calcHelper.generatePointInCircle()) for x in range(FLY_NUMBER)]
-        self.distanceThreshold = INTERACTION_DISTANCE_THRESHHOLD
+        self.step_number = STEP_NUMBER
+        self.arena_radius = ARENA_RADIUS_SCALED
+        self.fly_list = [Fly(calcHelper.generate_point_in_circle()) for x in range(FLY_NUMBER)]
+        self.distance_threshold = INTERACTION_DISTANCE_THRESHOLD
         
-    def generateWalks(self):
+    def generate_walks(self):
         dataGenerator = DataGenerator()
 
-        for fly in self.flyList:
-            dataGenerator.generateRandomSteps(self.stepNumber)
-            fly.moveInSequence(dataGenerator.steps)
+        for fly in self.fly_list:
+            dataGenerator.generate_random_steps(self.step_number)
+            fly.move_in_sequence(dataGenerator.steps)
 
-    def exportAll(self):
-        clearAll()
+    def export_all(self):
+        clear_all()
 
-        for fly in self.flyList:
-            self.exportFly(fly)
+        for fly in self.fly_list:
+            self.export_fly(fly)
 
-    def exportFly(self, fly):
-        plotHelper = PlotHelper()
-        xCoordinates = [point.x for point in fly.pointList]
-        yCoordinates = [point.y for point in fly.pointList]
+    def export_fly(self, fly):
+        plot_helper = PlotHelper()
+        x_coordinates = [point.x for point in fly.point_list]
+        y_coordinates = [point.y for point in fly.point_list]
 
-        plotHelper.setCoordinates(xCoordinates, yCoordinates)
+        plot_helper.set_coordinates(x_coordinates, y_coordinates)
 
-        dict = {"id" : fly.id, "pos x": xCoordinates, "pos y": yCoordinates}
+        dict = {"id" : fly.id, "pos x": x_coordinates, "pos y": y_coordinates}
         df = pd.DataFrame(dict)
         os.makedirs(MOVEMENT_DIR, exist_ok=True)
         os.makedirs(ANIMATION_DIR, exist_ok=True)
         os.makedirs(PLOT_DIR, exist_ok=True)
         
-        animation_filename = ANIMATION_DIR + "/" + str(fly.id) + "_" + getCurrentTime()+ ".gif"
-        plot_filename = PLOT_DIR + "/" + str(fly.id) + "_" + getCurrentTime() + ".png"
-        movement_filename = MOVEMENT_DIR + "/" + str(fly.id) + "_" + getCurrentTime() + ".csv"
+        animation_filename = ANIMATION_DIR + "/" + str(fly.id) + "_" + get_current_time()+ ".gif"
+        plot_filename = PLOT_DIR + "/" + str(fly.id) + "_" + get_current_time() + ".png"
+        movement_filename = MOVEMENT_DIR + "/" + str(fly.id) + "_" + get_current_time() + ".csv"
         
         df.to_csv(movement_filename)
-        plotHelper.exportPlot(plot_filename)
+        plot_helper.export_plot(plot_filename)
         
         if (SHOULD_ANIMATE):
-            plotHelper.exportAnimation(animation_filename)
+            plot_helper.export_animation(animation_filename)
 
-    def exportAllFlyInteractions(self):
-        flyDict = {fly.id: pd.DataFrame({"pos x": [point.x for point in fly.pointList],
-                                      "pos y": [point.y for point in fly.pointList]})
-               for fly in self.flyList}
+    def export_all_fly_interactions(self):
+        fly_dict = {fly.id: pd.DataFrame({"pos x": [point.x for point in fly.point_list],
+                                      "pos y": [point.y for point in fly.point_list]})
+               for fly in self.fly_list}
         
-        allFliesDistances = distances_between_all_flies(flyDict)
-        allFliesInteractions = getFlyInteractions(allFliesDistances, self.distanceThreshold)
+        all_flies_distances = distances_between_all_flies(fly_dict)
+        all_flies_interactions = get_fly_interactions(all_flies_distances, self.distance_threshold)
         
         os.makedirs(OUTPUT_DIR, exist_ok=True)
         
-        allFliesDistances.to_csv(OUTPUT_DIR + "/distances.csv", index = True)
-        allFliesInteractions.to_csv(OUTPUT_DIR + "/interactions.csv", index = False)
-        saveInteractionsAsGraph(allFliesInteractions)
+        all_flies_distances.to_csv(OUTPUT_DIR + "/distances.csv", index = True)
+        all_flies_interactions.to_csv(OUTPUT_DIR + "/interactions.csv", index = False)
+        save_as_graph(all_flies_interactions)

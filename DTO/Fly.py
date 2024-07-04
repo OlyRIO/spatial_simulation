@@ -9,8 +9,8 @@ class Fly:
     id_iterator = itertools.count(start=1)
 
     def __init__(self, point):
-        self.currentPoint = point
-        self.pointList = [point]
+        self.current_point = point
+        self.point_list = [point]
         self.id = next(self.id_iterator)
 
     """
@@ -23,24 +23,24 @@ class Fly:
             point: new position of the fly
     
     """
-    def getTargetPoint(self, step):
-        targetX = step.distance * math.cos(step.direction)
-        targetY = step.distance * math.sin(step.direction)
+    def get_target_point(self, step):
+        target_x = step.distance * math.cos(step.direction)
+        target_y = step.distance * math.sin(step.direction)
 
-        return Point(self.currentPoint.x + targetX, self.currentPoint.y + targetY)
+        return Point(self.current_point.x + target_x, self.current_point.y + target_y)
 
-    def moveInSequence(self, stepList):
-        calcHelper = CalculationHelper()
-        dataGenerator = DataGenerator()
+    def move_in_sequence(self, step_list):
+        calc_helper = CalculationHelper()
+        data_generator = DataGenerator()
 
-        for step in stepList:
-            targetPoint = self.getTargetPoint(step)
+        for step in step_list:
+            target_point = self.get_target_point(step)
 
-            while targetPoint == self.currentPoint or not calcHelper.isPointInCircle(targetPoint):
-                targetPoint = self.getTargetPoint(dataGenerator.generateRandomStep())
+            while target_point == self.current_point or not calc_helper.is_point_in_circle(target_point):
+                target_point = self.get_target_point(data_generator.generate_random_step())
 
-            self.moveTo(targetPoint)
+            self.move_to(target_point)
 
-    def moveTo(self, targetPoint):
-        self.currentPoint = targetPoint
-        self.pointList.append(self.currentPoint)
+    def move_to(self, target_point):
+        self.current_point = target_point
+        self.point_list.append(self.current_point)

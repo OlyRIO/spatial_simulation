@@ -8,13 +8,13 @@ import random
 import sys
 
 
-def clearAll():
-    clearDirectory(DISTANCES_DIR)
-    clearDirectory(MOVEMENT_DIR)
-    clearDirectory(ANIMATION_DIR)
-    clearDirectory(PLOT_DIR)
+def clear_all():
+    clear_directory(DISTANCES_DIR)
+    clear_directory(MOVEMENT_DIR)
+    clear_directory(ANIMATION_DIR)
+    clear_directory(PLOT_DIR)
 
-def loadFilesFromFolder(path, file_format=".csv", n_sort=False):
+def load_files_from_directory(path, file_format=".csv", n_sort=False):
     # import folder sa csvomima
     if not os.listdir(path):
         sys.exit("Directory is empty")
@@ -39,7 +39,7 @@ def natural_sort(l):
 
     return sorted(l, key=alphanum_key)
 
-def clearDirectory(directory_path):
+def clear_directory(directory_path):
     try:
         files = os.listdir(directory_path)
         for file in files:
@@ -50,10 +50,10 @@ def clearDirectory(directory_path):
     except OSError:
         print("Error occurred while deleting files. Try closing all files first.")
 
-def getCurrentTime():
+def get_current_time():
     current_time = time.strftime('%Y-%m-%d--%H-%M-%S')
     
     return current_time
 
-def getRandomElementFromList(list):
+def get_random_element_from_list(list):
     return random.choice(list)

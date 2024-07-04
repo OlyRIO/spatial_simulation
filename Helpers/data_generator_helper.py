@@ -22,9 +22,9 @@ class DataGenerator:
     """
 
     def __init__(self):
-        self.normalized_distances = getDistancesData()
+        self.normalized_distances = get_distances_data()
         
-    def generateRandomSteps(self, stepNumber):
+    def generate_random_steps(self, stepNumber):
         """ Generates random steps
         Parameters:
 
@@ -32,14 +32,14 @@ class DataGenerator:
         """
 
         self.steps = []
-        calcHelper = CalculationHelper(ARENA_RADIUS_SCALED)
+        calc_helper = CalculationHelper()
         
         for i in range(stepNumber):
-            self.steps.append(self.generateRandomStep())
+            self.steps.append(self.generate_random_step())
 
-    def generateRandomStep(self):
-        calcHelper = CalculationHelper(ARENA_RADIUS_SCALED)
-        dir = calcHelper.normalizeAngle(random.random())
-        dist = getRandomElementFromList(self.normalized_distances)
+    def generate_random_step(self):
+        calc_helper = CalculationHelper()
+        dir = calc_helper.normalize_angle(random.random())
+        dist = get_random_element_from_list(self.normalized_distances)
         
         return Step(dir, dist)
