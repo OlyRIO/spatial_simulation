@@ -8,7 +8,7 @@ ARENA_RADIUS_REAL = 19.417
 SCALING_RATIO = ARENA_RADIUS_SCALED / ARENA_RADIUS_REAL
 
 # Number of flies being simulated
-FLY_NUMBER = 5
+FLY_NUMBER = 12
 
 # How many times fly positions are measured per second
 SAMPLING_FREQUENCY = 24
@@ -18,9 +18,6 @@ SIMULATION_DURATION = 1200
 
 # Number of steps each fly makes
 STEP_NUMBER = SAMPLING_FREQUENCY * SIMULATION_DURATION
-
-# Size of each step
-# STEP_SIZE = 0.1
 
 # Minimum distance between two flies required to categorise it as an interaction measured in millimeters, normalized to [0, 1] 
 INTERACTION_DISTANCE_THRESHOLD = 5 * SCALING_RATIO

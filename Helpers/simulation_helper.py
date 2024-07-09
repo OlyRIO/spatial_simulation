@@ -43,14 +43,15 @@ class SimulationHelper:
         os.makedirs(ANIMATION_DIR, exist_ok=True)
         os.makedirs(PLOT_DIR, exist_ok=True)
         
-        animation_filename = ANIMATION_DIR + "/" + str(fly.id) + "_" + get_current_time()+ ".gif"
-        plot_filename = PLOT_DIR + "/" + str(fly.id) + "_" + get_current_time() + ".png"
         movement_filename = MOVEMENT_DIR + "/" + str(fly.id) + "_" + get_current_time() + ".csv"
-        
         df.to_csv(movement_filename)
-        plot_helper.export_plot(plot_filename)
         
+        if(SHOULD_PLOT):
+            plot_filename = PLOT_DIR + "/" + str(fly.id) + "_" + get_current_time() + ".png"
+            plot_helper.export_plot(plot_filename)
+            
         if (SHOULD_ANIMATE):
+            animation_filename = ANIMATION_DIR + "/" + str(fly.id) + "_" + get_current_time()+ ".gif"
             plot_helper.export_animation(animation_filename)
 
     def export_all_fly_interactions(self):

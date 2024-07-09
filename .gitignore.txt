@@ -1,5 +1,5 @@
-Output
-Output/*
+Output/fly_movement
+Output/networks
 Visualization
 Visualization/*
 DTO/__pycache__

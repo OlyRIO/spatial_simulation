@@ -1,4 +1,4 @@
-import community
+import community as community_louvain
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -48,12 +48,7 @@ def graph_global_measures(g, pop_name):
     deg_list = [g.degree(node) for node in list(g.nodes)]
     average_degree = np.mean(deg_list)
 
-    try:
-        standard_deviation_degree = round(np.std(deg_list))
-        degree_heterogeneity = standard_deviation_degree / average_degree
-        degree_assortativity = nx.degree_assortativity_coefficient(g)
-    except BaseException:
-        degree_heterogeneity, degree_assortativity = 0, 0
+    standard_deviation_degree = round(np.std(deg_list))
 
     clustering_coeff = nx.clustering(g)
     average_cl_coeff_unweighted = np.mean([k for k in clustering_coeff.values()])
@@ -75,6 +70,21 @@ def graph_global_measures(g, pop_name):
     ave_closeness_c_w_count = np.mean([k for k in closeness_c_w_count.values()])
     closeness_c_w_duration = nx.closeness_centrality(g, distance="total_interaction_times")
     ave_closeness_c_w_duration = np.mean([k for k in closeness_c_w_duration.values()])
+    
+    partition = community_louvain.best_partition(g.to_undirected())
+    try:
+        newman_modularity_unweighted = community_louvain.modularity(
+            partition, g.to_undirected(), weight=None
+        )
+        newman_modularity_count = community_louvain.modularity(
+            partition, g.to_undirected(), weight="count"
+        )
+        newman_modularity_duration = community_louvain.modularity(
+            partition, g.to_undirected(), weight="total_interaction_times"
+        )
+        
+    except BaseException:
+        newman_modularity_unweighted, newman_modularity_count, newman_modularity_duration = 0, 0, 0
 
     d = {
         "Total edges": g.number_of_edges(),
@@ -89,6 +99,9 @@ def graph_global_measures(g, pop_name):
         "Average closseness centrality unweighted": ave_closeness_cent_unw,
         "Average closseness centrality weight=count": ave_closeness_c_w_count,
         "Average closseness centrality weight=duration(seconds)": ave_closeness_c_w_duration,
+        "Newman modularity unweighted": newman_modularity_unweighted,
+        "Newman_modularity weight=count": newman_modularity_count,
+        "Newman_modularity weight=dration(seconds)": newman_modularity_duration,
     }
 
     df = pd.DataFrame(d, index=[pop_name.replace(".gml", "")])
@@ -97,36 +110,9 @@ def graph_global_measures(g, pop_name):
     return df
 
 
-def global_range_measures():
-    """
-    TODO
-
-    # Measures of range
-    # "Number of components": ncc,
-    # "biggest_component size": bcs,
-
-    gcc = sorted(nx.connected_components(g.to_undirected()), key=len, reverse=True)
-    try:
-        gc = g.to_undirected().subgraph(gcc[0])
-        gc = list(max(nx.connected_components(g.to_undirected()), key=len))
-        gc = g.to_undirected().subgraph(gc)
-
-        spl = nx.average_shortest_path_length(gc)
-        diameter = nx.diameter(gc, e=None)
-        reach = nx.global_reaching_centrality(g, weight=None, normalized=True)
-
-    except BaseException:
-        gc = 0
-        spl = 0
-        diameter = 0
-        reach = 0
-
-    """
-
-
 def group_comm_stats(G, group_name, weight):
     """Graph partitions found using Louvian algorithm."""
-    partition = community.best_partition(G, weight=weight)
+    partition = community_louvain.best_partition(G, weight=weight)
 
     communities, count = [], 0.0
     for c in set(partition.values()):

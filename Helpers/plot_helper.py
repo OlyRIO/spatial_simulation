@@ -29,10 +29,6 @@ class PlotHelper:
 
         plt.plot(self.xCoords, self.yCoords)
         plt.savefig(filename)
-
-        if (SHOULD_PLOT):
-            plt.show()
-        
         plt.close()
 
     def export_animation(self, filename, circleRadius = ARENA_RADIUS_SCALED):
