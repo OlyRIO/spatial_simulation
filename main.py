@@ -19,4 +19,6 @@ def main():
     export_graph_global_measures()
     
 if __name__=="__main__":
-    main()  
+    # main()  
+    plot_helper = PlotHelper()
+    plot_helper.plot_measures()

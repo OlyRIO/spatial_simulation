@@ -158,6 +158,6 @@ def export_graph_global_measures():
         df = graph_global_measures(G, group_name)
         total = pd.concat([total, df], axis=1)
     
-    SAVE_PATH = os.path.join(OUTPUT_DIR, "total.csv")
+    SAVE_PATH = os.path.join(TREATMENTS_DIR, "RWN.csv")
     total = total.T
     total.to_csv(SAVE_PATH)
