@@ -9,9 +9,7 @@ import sys
 
 
 def clear_all():
-    clear_directory(DISTANCES_DIR)
     clear_directory(MOVEMENT_DIR)
-    clear_directory(ANIMATION_DIR)
     clear_directory(PLOT_DIR)
 
 def load_files_from_directory(path, file_format=".csv", n_sort=False):

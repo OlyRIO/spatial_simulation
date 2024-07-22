@@ -15,10 +15,10 @@ def main():
     
     simulation.generate_walks()
     simulation.export_all()
+    simulation.animate_simulation()
     simulation.export_all_fly_interactions()  
-    export_graph_global_measures()
     
+    # export_graph_global_measures()
+
 if __name__=="__main__":
-    # main()  
-    plot_helper = PlotHelper()
-    plot_helper.plot_measures()
+    main()

@@ -22,8 +22,14 @@ STEP_NUMBER = SAMPLING_FREQUENCY * SIMULATION_DURATION
 # Minimum distance between two flies required to categorise it as an interaction measured in millimeters, normalized to [0, 1] 
 INTERACTION_DISTANCE_THRESHOLD = 5 * SCALING_RATIO
 
-# Whether or not the application should show plots
-SHOULD_PLOT = False
+# Plots the static fly movement if set to true 
+PLOT_STATIC = False
 
-# Exports the animation if set to true 
-SHOULD_ANIMATE = False
+# Saves the static fly movement in the designated directory if set to true 
+EXPORT_STATIC = False
+
+# Plots the animation if set to true 
+PLOT_ANIMATION = True
+
+# Saves the animation in the designated directory if set to true 
+EXPORT_ANIMATION = False

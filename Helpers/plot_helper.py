@@ -19,6 +19,9 @@ class PlotHelper:
         self.yCoords = np.array(yCoords)
 
     def export_plot(self, filename, circleRadius = ARENA_RADIUS_SCALED):
+        if (not EXPORT_STATIC and not PLOT_STATIC):
+            return
+        
         plt.figure()
         ax = plt.gca()
         ax.set_aspect('equal')
@@ -30,47 +33,54 @@ class PlotHelper:
         plt.ylabel('Y')
 
         plt.plot(self.xCoords, self.yCoords)
-        plt.savefig(filename)
+        
+        if (PLOT_STATIC):
+            plt.show()
+                
+        if (EXPORT_STATIC):
+            plt.savefig(filename)
+            
         plt.close()
 
-    def export_animation(self, filename, circleRadius = ARENA_RADIUS_SCALED):
+    def export_animation(self, filename, all_x_coords, all_y_coords, circleRadius = ARENA_RADIUS_SCALED):
+        if (not EXPORT_ANIMATION and not PLOT_ANIMATION):
+            return
+        
+        start_time = time.time()
         fig = plt.figure()
         ax = plt.gca()
         ax.set_aspect('equal')
         ax.tick_params(axis = 'both', length = 20)
 
-        xdata, ydata = [], []
-        line, = ax.plot([], [], lw=2)
-
-        def data_gen():
-            for i in range(len(self.xCoords)):
-                yield self.xCoords[i], self.yCoords[i]
-
-        def run(data):
-            x, y = data
-            xdata.append(x)
-            ydata.append(y)
-
-            line.set_data(xdata, ydata)
-
-            return line
-
+        lines = [ax.plot([], [], marker='o')[0] for _ in range(STEP_NUMBER)]
+        
         def init():
-            del xdata[:]
-            del ydata[:]      
-            line.set_data(xdata, ydata)
-
-            return line
+            for line in lines:
+                line.set_data([], [])
+            return lines
 
         circle = plt.Circle((circleRadius, circleRadius), circleRadius, color='r', fill=False)
         ax.add_patch(circle)
         plt.xlabel('X')
         plt.ylabel('Y')
-
-        ani = animation.FuncAnimation(fig, run, data_gen, interval=50, init_func=init,
-                              save_count = STEP_NUMBER)
         
-        ani.save(filename, writer = self.writer)
+        def update(frame):
+            for line, x_coords, y_coords in zip(lines, all_x_coords, all_y_coords):
+                if frame < len(x_coords):
+                    start_index = max(0, frame - 4)  # Ensure we don't go below zero
+                    line.set_data(x_coords[start_index:frame+1], y_coords[start_index:frame+1])
+            return lines
+
+        # Call the animator
+        anim = animation.FuncAnimation(fig, update, frames=STEP_NUMBER, init_func=init, blit=True, interval=500)
+        
+        if(EXPORT_ANIMATION):
+            anim.save(filename, writer = self.writer)
+            end_time = time.time()
+            print("Time elapsed for all flies animation: {}" .format(end_time - start_time))
+            
+        if(PLOT_ANIMATION):
+            plt.show()
         
     def plot_measures(self):
         TREATMENTS = ["CsCh", "pseudo_CsCh", "RWN"]
@@ -99,7 +109,6 @@ class PlotHelper:
                     measure_name
                 ]
 
-            # anova_result = scipy.stats.f_oneway(*treatment_sums.values())
             all_data = np.concatenate([*treatment_sums.values()])
             group_labels = []
             for treatment in TREATMENTS:
@@ -109,12 +118,6 @@ class PlotHelper:
 
             if combined_data_reset[measure_name].min() == combined_data_reset[measure_name].max():
                 continue
-
-            # tukey_results = pairwise_tukeyhsd(all_data, group_labels)
-            # for treatment in treatment_sums.keys():
-            #     print(f"{treatment} mean value: {np.mean(treatment_sums[treatment])} SD value: {np.std(treatment_sums[treatment])}")
-
-            # print(tukey_results)
 
             fig, axes = plt.subplots(2, 2, figsize=(14, 11))
             plt.suptitle(f"Distribution of {measure_name}", fontsize=18)

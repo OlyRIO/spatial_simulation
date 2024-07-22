@@ -30,6 +30,17 @@ class SimulationHelper:
         for fly in self.fly_list:
             self.export_fly(fly)
 
+    def animate_simulation(self):
+        x_coordinates = [[point.x for point in fly.point_list] for fly in self.fly_list]
+        y_coordinates = [[point.y for point in fly.point_list] for fly in self.fly_list]
+        
+        plot_helper = PlotHelper()
+        plot_helper.set_coordinates(x_coordinates, y_coordinates)
+        
+        filename = ANIMATION_DIR + "/" + "all_flies" + "_" + get_current_time()+ ".gif"
+        plot_helper.export_animation(filename, x_coordinates, y_coordinates)
+        
+                 
     def export_fly(self, fly):
         plot_helper = PlotHelper()
         x_coordinates = [point.x for point in fly.point_list]
@@ -46,14 +57,9 @@ class SimulationHelper:
         movement_filename = MOVEMENT_DIR + "/" + str(fly.id) + "_" + get_current_time() + ".csv"
         df.to_csv(movement_filename)
         
-        if(SHOULD_PLOT):
-            plot_filename = PLOT_DIR + "/" + str(fly.id) + "_" + get_current_time() + ".png"
-            plot_helper.export_plot(plot_filename)
+        plot_filename = PLOT_DIR + "/" + str(fly.id) + "_" + get_current_time() + ".png"
+        plot_helper.export_plot(plot_filename)
             
-        if (SHOULD_ANIMATE):
-            animation_filename = ANIMATION_DIR + "/" + str(fly.id) + "_" + get_current_time()+ ".gif"
-            plot_helper.export_animation(animation_filename)
-
     def export_all_fly_interactions(self):
         fly_dict = {fly.id: pd.DataFrame({"pos x": [point.x for point in fly.point_list],
                                       "pos y": [point.y for point in fly.point_list]})
