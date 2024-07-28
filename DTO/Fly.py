@@ -9,6 +9,7 @@ class Fly:
     id_iterator = itertools.count(start=1)
 
     def __init__(self, point):
+        calc_helper = CalculationHelper()
         self.current_point = point
         self.point_list = [point]
         self.id = next(self.id_iterator)
@@ -38,7 +39,8 @@ class Fly:
 
             while target_point == self.current_point or not calc_helper.is_point_in_circle(target_point):
                 target_point = self.get_target_point(data_generator.generate_random_step())
-
+            tempDirection = calc_helper.normalize_angle(step.direction)
+            # tempDirection = tempDirection
             self.move_to(target_point)
 
     def move_to(self, target_point):

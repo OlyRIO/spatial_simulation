@@ -39,7 +39,35 @@ class DataGenerator:
 
     def generate_random_step(self):
         calc_helper = CalculationHelper()
-        dir = calc_helper.normalize_angle(random.random())
+        lowerLimit = 0
+        upperLimit = 0
+        currentDirection = 0
+        
+        if (not hasattr(self, 'steps')):
+            self.steps = []
+            
+        if (len(self.steps) == 0):
+            currentDirection = random.random()
+        else:
+             currentDirection = calc_helper.normalize_angle(self.steps[-1].direction)
+       
+        
+        if (currentDirection - 0.125 < 0):
+            lowerLimit = 1 - abs(currentDirection - 0.125)
+        else:
+            lowerLimit = currentDirection - 0.125
+        
+        if (currentDirection + 0.125 > 1):
+            upperLimit = currentDirection + 0.125
+        else:
+            upperLimit = currentDirection + 0.125
+        
+        if (upperLimit < lowerLimit):
+            temp = upperLimit
+            upperLimit = lowerLimit
+            lowerLimit = temp
+        
+        dir = calc_helper.angle_from_normalized(random.uniform(lowerLimit, upperLimit))
         dist = get_random_element_from_list(self.normalized_distances)
         
         return Step(dir, dist)

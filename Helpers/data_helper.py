@@ -148,7 +148,11 @@ def save_as_graph(distances):
     os.makedirs(NETWORKS_DIR, exist_ok=True)
     nx.write_gml(G, NETWORKS_DIR + "/" + "CsCh-" + get_current_time() + ".gml")
 
-def export_graph_global_measures():
+def export_all_graphs_global_measures():
+    """
+    Method used to load all graphs saved in their designated folders, get their measures and save them all to a .csv file
+    
+    """
     graphs = load_files_from_directory(NETWORKS_DIR, file_format=".gml")
 
     total = pd.DataFrame()
