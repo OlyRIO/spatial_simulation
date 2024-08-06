@@ -8,14 +8,14 @@ ARENA_RADIUS_REAL = 19.417
 SCALING_RATIO = ARENA_RADIUS_SCALED / ARENA_RADIUS_REAL
 
 # Number of flies being simulated
-FLY_NUMBER = 5
+FLY_NUMBER = 12
 
 # How many times fly positions are measured per second
 SAMPLING_FREQUENCY = 24
 
 #Simulation duration, measured in seconds
-# SIMULATION_DURATION = 1200
-SIMULATION_DURATION = 100
+SIMULATION_DURATION = 1200
+# SIMULATION_DURATION = 100
 
 # Number of steps each fly makes
 STEP_NUMBER = SAMPLING_FREQUENCY * SIMULATION_DURATION
@@ -24,7 +24,7 @@ STEP_NUMBER = SAMPLING_FREQUENCY * SIMULATION_DURATION
 INTERACTION_DISTANCE_THRESHOLD = 5 * SCALING_RATIO
 
 # Plots the static fly movement if set to true 
-PLOT_STATIC = True
+PLOT_STATIC = False
 
 # Saves the static fly movement in the designated directory if set to true 
 EXPORT_STATIC = False

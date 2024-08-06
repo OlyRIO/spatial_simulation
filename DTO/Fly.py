@@ -40,7 +40,7 @@ class Fly:
             while target_point == self.current_point or not calc_helper.is_point_in_circle(target_point):
                 # target_point = self.get_target_point(data_generator.generate_random_step())
                 tempDirection = calc_helper.normalize_angle(step.direction)
-                tempDirection = tempDirection + 0.5
+                tempDirection = tempDirection + 0.25
                 if (tempDirection > 1):
                     tempDirection = tempDirection - 1
                     
