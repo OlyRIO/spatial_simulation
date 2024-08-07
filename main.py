@@ -23,8 +23,8 @@ def main():
 if __name__=="__main__":
     plot_helper = PlotHelper()
     
-    for i in range(1000):
-        main()
+    # for i in range(1000):
+    #     main()
         
     export_all_graphs_global_measures()
     plot_helper.plot_measures()
