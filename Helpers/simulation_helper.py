@@ -18,11 +18,14 @@ class SimulationHelper:
         self.distance_threshold = INTERACTION_DISTANCE_THRESHOLD
         
     def generate_walks(self):
+        print("Generating walks...")
         dataGenerator = DataGenerator()
 
         for fly in self.fly_list:
             dataGenerator.generate_random_steps(self.step_number)
             fly.move_in_sequence(dataGenerator.steps)
+        
+        print("Walks generated.")
 
     def export_all(self):
         clear_all()

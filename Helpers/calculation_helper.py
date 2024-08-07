@@ -53,7 +53,7 @@ class CalculationHelper:
 
         return check_condition
     
-    def normalize_angle(self, angle):
+    def angle_from_normalized(self, angle):
         """
     Normalizes angle values from [0, 1] to [0, 2 * pi]
 
@@ -65,4 +65,11 @@ class CalculationHelper:
     """
         
         return angle * 2 * math.pi
+    
+    def normalize_angle(self, angle):
+        """
+        Normalizes angle values from [0, 2 * pi] to [0, 1]
+        """
+    
+        return angle / (2 * math.pi)
 

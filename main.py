@@ -18,7 +18,13 @@ def main():
     simulation.animate_simulation()
     simulation.export_all_fly_interactions()  
     
-    # export_graph_global_measures()
+    # export_all_graphs_global_measures()
 
 if __name__=="__main__":
-    main()
+    plot_helper = PlotHelper()
+    
+    for i in range(1000):
+        main()
+        
+    export_all_graphs_global_measures()
+    plot_helper.plot_measures()

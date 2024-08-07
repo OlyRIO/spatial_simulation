@@ -15,6 +15,7 @@ SAMPLING_FREQUENCY = 24
 
 #Simulation duration, measured in seconds
 SIMULATION_DURATION = 1200
+# SIMULATION_DURATION = 100
 
 # Number of steps each fly makes
 STEP_NUMBER = SAMPLING_FREQUENCY * SIMULATION_DURATION
@@ -29,7 +30,7 @@ PLOT_STATIC = False
 EXPORT_STATIC = False
 
 # Plots the animation if set to true 
-PLOT_ANIMATION = True
+PLOT_ANIMATION = False
 
 # Saves the animation in the designated directory if set to true 
 EXPORT_ANIMATION = False
