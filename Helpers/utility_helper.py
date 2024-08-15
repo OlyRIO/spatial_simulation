@@ -13,7 +13,6 @@ def clear_all():
     clear_directory(PLOT_DIR)
 
 def load_files_from_directory(path, file_format=".csv", n_sort=False):
-    # import folder sa csvomima
     if not os.listdir(path):
         sys.exit("Directory is empty")
 

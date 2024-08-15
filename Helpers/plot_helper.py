@@ -109,7 +109,6 @@ class PlotHelper:
                     measure_name
                 ]
 
-            all_data = np.concatenate([*treatment_sums.values()])
             group_labels = []
             for treatment in TREATMENTS:
                 group_labels.extend(
@@ -119,38 +118,8 @@ class PlotHelper:
             if combined_data_reset[measure_name].min() == combined_data_reset[measure_name].max():
                 continue
 
-            fig, axes = plt.subplots(2, 2, figsize=(14, 11))
-            plt.suptitle(f"Distribution of {measure_name}", fontsize=18)
-
-            sns.pointplot(
-                data=combined_data_reset,
-                x="Treatment",
-                y=measure_name,
-                dodge=False,
-                hue="Treatment",
-                errorbar="sd",
-                ax=axes[0, 0],
-            )
-            axes[0, 0].set_title("Plot using SD")
-            axes[0, 0].set_xlabel("Treatment")
-            axes[0, 0].set_ylabel(measure_name)
-            axes[0, 0].tick_params(rotation=90)
-            axes[0, 0].set_ylim(0, combined_data_reset[measure_name].max() * 1.1)
-
-            sns.pointplot(
-                data=combined_data_reset,
-                x="Treatment",
-                y=measure_name,
-                dodge=False,
-                hue="Treatment",
-                errorbar="se",
-                ax=axes[0, 1],
-            )
-            axes[0, 1].set_title("Plot using SE")
-            axes[0, 1].set_xlabel("Treatment")
-            # axes[0, 1].set_ylabel(measure_name)
-            axes[0, 1].tick_params(rotation=90)
-            axes[0, 1].set_ylim(0, combined_data_reset[measure_name].max() * 1.1)
+            fig, axes = plt.subplots()
+            plt.suptitle(f"Distribution of {measure_name}", fontsize=10)
 
             sns.boxplot(
                 data=combined_data_reset,
@@ -158,47 +127,16 @@ class PlotHelper:
                 y=measure_name,
                 dodge=False,
                 hue="Treatment",
-                ax=axes[1, 0],
+                ax=axes,
             )
 
-            axes[1, 0].set_title(f"Boxplot")
-            axes[1, 0].set_xlabel("Treatment")
-            axes[1, 0].set_ylabel(measure_name)
-            axes[1, 0].tick_params(rotation=90)
-            axes[1, 0].set_ylim(0, combined_data_reset[measure_name].max() * 1.1)
-            # axes[1, 0].legend("")
-
-            sns.scatterplot(
-                data=combined_data_reset,
-                x="Treatment",
-                y=measure_name,
-                hue="Treatment",
-                ax=axes[1, 1],
-                s=50,
-                alpha=0.6,
-                markers=True,
-                style="Treatment",
-                legend=False,
-            )
-
-            per_group = len(combined_data_reset) / len(all_treatments)
-            locations_x = [per_group / 2 + (per_group * x) for x in range(0, len(all_treatments))]
-
-            axes[1, 1].set_title("Scatter plot")
-            # axes[1, 1].legend(loc="center left", bbox_to_anchor=(1, 0.5), title="Treatment", labels=config["TREATMENTS"])
-            axes[1, 1].set_xlabel("Treatment")
-            # axes[1, 1].set_xticks(locations_x)
-            # axes[1, 1].xaxis.set_ticks(locations_x)
-            # axes[1, 1].set_xticklabels(config["TREATMENTS"])
-            axes[1, 1].tick_params(axis="x", rotation=90)
-            # axes[1, 1].set_ylabel(measure_name)
-            axes[1, 1].set_ylim(0, combined_data_reset[measure_name].max() * 1.1)
-
-            plt.tight_layout()
-
+            axes.set_xlabel("Treatment")
+            axes.set_ylabel(measure_name)
+            axes.tick_params(rotation=90)
+            axes.set_ylim(0, combined_data_reset[measure_name].max() * 1.1)
+            fig.autofmt_xdate()
+            
             save_path = os.path.join(MEASURES_DIR, f"{measure_name}.png")
             plt.savefig(save_path)
-
-            # plt.show()
 
 

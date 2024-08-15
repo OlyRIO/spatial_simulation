@@ -10,11 +10,11 @@ import numpy as np
 
 class SimulationHelper:
     def __init__(self):
-        calcHelper = CalculationHelper()
+        calc_helper = CalculationHelper()
         
         self.step_number = STEP_NUMBER
         self.arena_radius = ARENA_RADIUS_SCALED
-        self.fly_list = [Fly(calcHelper.generate_point_in_circle()) for x in range(FLY_NUMBER)]
+        self.fly_list = [Fly(calc_helper.generate_point_in_circle()) for x in range(FLY_NUMBER)]
         self.distance_threshold = INTERACTION_DISTANCE_THRESHOLD
         
     def generate_walks(self):

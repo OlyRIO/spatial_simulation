@@ -1,7 +1,7 @@
-output/fly_movement
-output/networks
-Visualization
-Visualization/*
+output/*
+treatments/RWN.csv
+visualization
+visualization/*
 DTO/__pycache__
 DTO/__pycache__/*
 Helpers/__pycache__
